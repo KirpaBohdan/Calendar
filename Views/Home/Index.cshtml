@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    #LeftArrow {
+        transform: rotate(180deg);
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <a href="~/Home/Index?y=@if (ViewBag.Month == 1)
+               {
+                   @Html.Raw(ViewBag.Year - 1 + "&m=12");
+               }
+               else
+               {
+                   @Html.Raw(ViewBag.Year + "&m=" + (ViewBag.Month-1));
+               }
+
+               ">
+                <img height="40" width="80" class="rounded float-left" id="LeftArrow" src="~/Img/right.jpg">
+            </a>
+        </div>
+        <div class="col-6 text-center">
+            <h3>@ViewBag.MonthString</h3>
+        </div>
+        <div class="col">
+            <a href="~/Home/Index?y=@if (ViewBag.Month == 12)
+               {
+                   @Html.Raw(ViewBag.Year + 1 + "&m=1");
+               }
+               else
+               {
+                   @Html.Raw(ViewBag.Year + "&m=" + (ViewBag.Month+1));
+               }">
+                <img height="40" width="80" class="rounded float-right" src="~/Img/right.jpg">
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Понеділок</th>
+            <th scope="col">Вівторок</th>
+            <th scope="col">Середа</th>
+            <th scope="col">Четвер</th>
+            <th scope="col">П'ятниця</th>
+            <th scope="col">Субота</th>
+            <th scope="col">Неділя</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < 6; i++)
+        {
+            <tr>
+                @for (int j = 1; j < 8; j++)
+                {
+                    if (i * 7 + j + 1 > ViewBag.StartDay && i * 7 + j - ViewBag.StartDay < ViewBag.DaysInMonth)
+                    {
+                        <td><a href="~/Home/TimeTable?y=@ViewBag.Year&m=@ViewBag.Month&d=@(i * 7 + j + 1 - ViewBag.StartDay)">@(i * 7 + j + 1 - ViewBag.StartDay)
+                            @if (ViewBag.TaskNum[i * 7 + j + 1 - ViewBag.StartDay] != 0)
+                            {
+                                @Html.Raw(" (" + ViewBag.TaskNum[i * 7 + j + 1 - ViewBag.StartDay] + ")");
+                            }</a></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
+        }
+</table>
+
